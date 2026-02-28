@@ -3,3 +3,12 @@
 
 # macOS
 .DS_Store
+
+# BMAD — personal agent memory and generated artifacts
+_bmad/_memory/
+_bmad-output/implementation-artifacts/
+_bmad-output/test-artifacts/
+_bmad-output/bmb-creations/
+
+# Claude Code — personal settings
+.claude/settings.local.json
