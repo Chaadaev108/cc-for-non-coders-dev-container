@@ -163,10 +163,47 @@ related_plans:
 
 ---
 
-## Порядок запуска (каждый шаг — новый контекст)
+## Git-процесс
+
+### Рабочая ветка
+
+Вся работа с BMAD-агентами ведётся в ветке **`bmad-workspace`** — только здесь есть `_bmad/` и `.claude/commands/`.
+
+### Создание PR из чистой ветки
+
+Когда артефакты готовы (документация, код фичи), создаём PR-ветку от main и копируем только нужные файлы:
+
+```bash
+# Пример: PR с документацией
+git checkout main
+git checkout -b docs/project-documentation
+git checkout bmad-workspace -- docs/
+git commit -m "docs: добавить документацию проекта"
+# → PR в upstream
+
+# Вернуться к работе
+git checkout bmad-workspace
+```
+
+```bash
+# Пример: PR с фичей провайдеров
+git checkout main
+git checkout -b feature/api-provider-switch
+git checkout bmad-workspace -- entrypoint.sh providers.json docker-compose.yml ...
+git commit -m "feat: система переключения API-провайдеров"
+# → PR в upstream
+
+git checkout bmad-workspace
+```
+
+Это гарантирует чистые PR без `_bmad/` и `planning-artifacts/`.
+
+---
+
+## Порядок запуска (каждый шаг — новый контекст, ветка bmad-workspace)
 
 | # | Команда | Агент | Вход | Выход |
-|---|---------|-------|------|-------|
+| --- | --- | --- | --- | --- |
 | 1 | `/bmad-bmm-document-project` | Mary 📊 | кодовая база | `docs/*` |
 | 2 | `/bmad-bmm-generate-project-context` | Mary 📊 | `docs/*` + код | `_bmad-output/project-context.md` |
 | 3 | `/bmad-agent-bmm-tech-writer` затем WD | Paige 📚 | `docs/*` + `project-context.md` | `docs/architecture-*.md`, `docs/visual-*.md` |
